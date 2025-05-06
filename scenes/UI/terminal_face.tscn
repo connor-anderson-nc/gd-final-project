@@ -1,0 +1,112 @@
+[gd_scene load_steps=9 format=3 uid="uid://cp5ymsxj68f37"]
+
+[ext_resource type="Script" path="res://scripts/terminal_face.gd" id="1_ohuvt"]
+[ext_resource type="FontFile" uid="uid://dljyqiilwkt41" path="res://assets/fonts/Perfect DOS VGA 437.ttf" id="2_e14yu"]
+[ext_resource type="Shader" path="res://scripts/shaders/vhs_filter.gdshader" id="3_xj3vn"]
+
+[sub_resource type="Theme" id="Theme_hod54"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ihine"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6onsq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u34hj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_umf3u"]
+shader = ExtResource("3_xj3vn")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.703
+shader_parameter/scanlines_width = 0.087
+shader_parameter/grille_opacity = 0.12
+shader_parameter/resolution = Vector2(1152, 648)
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.0
+shader_parameter/noise_opacity = 0.052
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 4.75e-08
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.93
+shader_parameter/vignette_opacity = 0.5
+
+[node name="TerminalFace" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ohuvt")
+metadata/_edit_vertical_guides_ = [17.0]
+metadata/_edit_horizontal_guides_ = [607.0, 607.0]
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.154876, 0.154876, 0.154876, 1)
+
+[node name="text_hist" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 1138.0
+offset_bottom = 605.0
+theme_override_fonts/normal_font = ExtResource("2_e14yu")
+theme_override_font_sizes/normal_font_size = 20
+scroll_following = true
+
+[node name="input_line" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 1138.0
+offset_bottom = 38.0
+
+[node name="LineEdit" type="LineEdit" parent="input_line"]
+z_index = 1
+layout_mode = 0
+offset_left = 30.0
+offset_right = 1120.0
+offset_bottom = 20.0
+theme = SubResource("Theme_hod54")
+theme_override_fonts/font = ExtResource("2_e14yu")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ihine")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_6onsq")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_u34hj")
+
+[node name="Label" type="Label" parent="input_line"]
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_fonts/font = ExtResource("2_e14yu")
+theme_override_font_sizes/font_size = 20
+text = ">>"
+
+[node name="overlay" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="background2" type="ColorRect" parent="overlay"]
+z_index = 2
+material = SubResource("ShaderMaterial_umf3u")
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.154876, 0.154876, 0.154876, 1)
+
+[node name="background3" type="ColorRect" parent="overlay"]
+z_index = 3
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0.431373, 0.2, 0.286275)

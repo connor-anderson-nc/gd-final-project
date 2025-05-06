@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=3 uid="uid://dv6lptxft3he"]
+
+[ext_resource type="ArrayMesh" uid="uid://mcyeyht2ffnp" path="res://assets/models/general/wall_light(base).res" id="1_ddtn7"]
+[ext_resource type="Texture2D" uid="uid://c7r0fwm6txibi" path="res://assets/textures/general/Ucupaint Material Color.png" id="2_cf6uu"]
+[ext_resource type="Texture2D" uid="uid://droxpu7msfhxx" path="res://assets/textures/general/Ucupaint Material Emission Color.exr" id="3_7i88k"]
+[ext_resource type="Texture2D" uid="uid://jmk3poa0t3kk" path="res://assets/textures/general/Ucupaint Material Roughness.png" id="4_mdlph"]
+[ext_resource type="ArrayMesh" uid="uid://dhrboms5dkste" path="res://assets/models/general/wall_light(cover).res" id="5_812v0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mins3"]
+albedo_texture = ExtResource("2_cf6uu")
+roughness_texture = ExtResource("4_mdlph")
+emission_enabled = true
+emission_texture = ExtResource("3_7i88k")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fpv88"]
+albedo_color = Color(0.800491, 0.800491, 0.800491, 1)
+metallic = 0.43
+metallic_specular = 0.96
+
+[node name="wall_light" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_ddtn7")
+surface_material_override/0 = SubResource("StandardMaterial3D_mins3")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.27602, 0, 0, 0, 1.27602, 0, 0, 0, 1, 0, 0, 0)
+mesh = ExtResource("5_812v0")
+surface_material_override/0 = SubResource("StandardMaterial3D_fpv88")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0.834614, 0.834614, 0.834614, 1)
+light_energy = 4.0
+shadow_enabled = true
+omni_range = 11.0
+omni_attenuation = 0.1

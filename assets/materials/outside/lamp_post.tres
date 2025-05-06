@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://mliwstxdmvlc"]
+
+[ext_resource type="Texture2D" uid="uid://bxewlt4qorwfg" path="res://assets/textures/outside/lamp_post/Ucupaint Cube Color.png" id="1_f4nr2"]
+[ext_resource type="Texture2D" uid="uid://di3qtvmiq47mq" path="res://assets/textures/outside/lamp_post/Ucupaint Cube Emission Strength.exr" id="2_4uekj"]
+[ext_resource type="Texture2D" uid="uid://bqc8m8k3lrse3" path="res://assets/textures/outside/lamp_post/Ucupaint Cube Metallic.png" id="3_kie76"]
+[ext_resource type="Texture2D" uid="uid://cqmsfq3oniukg" path="res://assets/textures/outside/lamp_post/Ucupaint Cube Normal.png" id="4_m48fu"]
+[ext_resource type="Texture2D" uid="uid://kb6dy12qmt5y" path="res://assets/textures/outside/lamp_post/Ucupaint Cube Roughness.png" id="5_qo6q4"]
+
+[resource]
+albedo_texture = ExtResource("1_f4nr2")
+metallic = 1.0
+metallic_texture = ExtResource("3_kie76")
+roughness_texture = ExtResource("5_qo6q4")
+emission_enabled = true
+emission_energy_multiplier = 3.0
+emission_texture = ExtResource("2_4uekj")
+normal_enabled = true
+normal_scale = 2.52
+normal_texture = ExtResource("4_m48fu")
+heightmap_scale = -1.0
+heightmap_flip_texture = true

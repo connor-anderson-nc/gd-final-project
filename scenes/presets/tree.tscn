@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://jpowvhni1083"]
+
+[ext_resource type="ArrayMesh" uid="uid://dn2ot5ymye86y" path="res://assets/models/outside/tree(trunk).res" id="1_23qj2"]
+[ext_resource type="ArrayMesh" uid="uid://b56lenja5246g" path="res://assets/models/outside/tree(leaves).res" id="2_qvegl"]
+[ext_resource type="Material" uid="uid://bq0m06l20jv5b" path="res://assets/materials/outside/leaves.tres" id="3_508eh"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lsiey"]
+height = 4.06776
+radius = 0.306165
+
+[node name="Tree" type="Node3D"]
+
+[node name="trunk" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_23qj2")
+skeleton = NodePath("StaticBody3D")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="trunk"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="trunk/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0446012, 0)
+shape = SubResource("CylinderShape3D_lsiey")
+
+[node name="leaves" type="MeshInstance3D" parent="trunk"]
+mesh = ExtResource("2_qvegl")
+skeleton = NodePath("../StaticBody3D")
+surface_material_override/0 = ExtResource("3_508eh")

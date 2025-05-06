@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://dncchgg1oekm2"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_du7vv"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fok2b"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ylscb"]
+
+[node name="Player" type="CharacterBody3D"]
+floor_max_angle = 1.39626
+floor_snap_length = 0.0
+script = ExtResource("1_du7vv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("CapsuleMesh_fok2b")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ylscb")
+
+[node name="pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.624103, 0)
+
+[node name="Camera3D" type="Camera3D" parent="pivot"]
+
+[node name="interaction_ray" type="RayCast3D" parent="pivot"]
+target_position = Vector3(0, 0, -2)
+collide_with_areas = true
+collide_with_bodies = false

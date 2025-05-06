@@ -1,0 +1,18 @@
+[gd_resource type="NoiseTexture2D" load_steps=3 format=3 uid="uid://cws35g0wm383"]
+
+[sub_resource type="Gradient" id="Gradient_qjeu6"]
+offsets = PackedFloat32Array(0, 0.0816327, 1)
+colors = PackedColorArray(0.458405, 0.458405, 0.458405, 1, 0.687215, 0.687215, 0.687215, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lffpa"]
+noise_type = 3
+frequency = 0.2154
+fractal_lacunarity = 3.2
+fractal_gain = 0.4
+domain_warp_enabled = true
+
+[resource]
+width = 256
+height = 256
+color_ramp = SubResource("Gradient_qjeu6")
+noise = SubResource("FastNoiseLite_lffpa")
