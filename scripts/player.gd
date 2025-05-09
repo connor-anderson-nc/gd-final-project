@@ -1,10 +1,15 @@
 extends CharacterBody3D
 
-@onready var pivot = $pivot
-
-const SPEED = 3.0
+### Movement ###
+const SPEED = 2.5
 const JUMP_VELOCITY = 2
+
+### Camera ###
+@onready var pivot = $pivot
 const sens = .25
+const amp = .1
+const vmod = .3
+var sway_speed = .005
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -44,11 +49,24 @@ func _physics_process(delta: float) -> void:
 
 	var object = $pivot/interaction_ray.get_collider()
 	if object && object.is_in_group("interactable"):
-		pass
+		object.interacted()
 
 	###########################
 	####### Camera Sway #######
 	###########################
-	
-	
+	var x = $pivot/Camera3D.position.x
+
+	if direction:
+		x += sway_speed
+		x = clamp(x, -amp, amp)
+	else:
+		x = move_toward(x, 0, abs(sway_speed))
+
+	if is_equal_approx(x, -amp) or is_equal_approx(x, amp):
+		sway_speed *= -1
+
+	$pivot/Camera3D.position.x = x
+	$pivot/Camera3D.position.y = -(x ** 2.0) * vmod
+
+
 	move_and_slide()

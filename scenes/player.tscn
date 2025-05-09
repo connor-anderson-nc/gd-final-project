@@ -12,6 +12,7 @@ floor_snap_length = 0.0
 script = ExtResource("1_du7vv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 2
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_fok2b")
 
@@ -22,6 +23,7 @@ shape = SubResource("CapsuleShape3D_ylscb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.624103, 0)
 
 [node name="Camera3D" type="Camera3D" parent="pivot"]
+cull_mask = 1048573
 
 [node name="interaction_ray" type="RayCast3D" parent="pivot"]
 target_position = Vector3(0, 0, -2)

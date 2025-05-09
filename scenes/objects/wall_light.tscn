@@ -30,7 +30,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_fpv88")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 light_color = Color(0.834614, 0.834614, 0.834614, 1)
-light_energy = 4.0
+light_energy = 2.0
+light_volumetric_fog_energy = 0.5
 shadow_enabled = true
 omni_range = 11.0
-omni_attenuation = 0.1
+omni_attenuation = 0.0

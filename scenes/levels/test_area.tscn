@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://dc4uhvmrb2itu"]
+[gd_scene load_steps=18 format=4 uid="uid://dc4uhvmrb2itu"]
 
 [ext_resource type="PackedScene" uid="uid://cp5ymsxj68f37" path="res://scenes/UI/terminal_face.tscn" id="1_w7l3s"]
 [ext_resource type="PackedScene" uid="uid://dncchgg1oekm2" path="res://scenes/player.tscn" id="2_lis67"]
@@ -74,6 +74,24 @@ backlight_enabled = true
 backlight = Color(1, 1, 1, 1)
 refraction_scale = 0.28
 
+[sub_resource type="GDScript" id="GDScript_1mnxj"]
+resource_name = "test"
+script/source = "extends Interact
+
+func _ready() -> void:
+	self.custom = Callable(self, \"spin\") 
+
+func spin():
+	rotate_x(30)
+"
+
+[sub_resource type="BoxMesh" id="BoxMesh_54pk0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2dt7y"]
+albedo_color = Color(0.2, 1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p3hvd"]
+
 [node name="test_area" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -116,3 +134,15 @@ layout_mode = 2
 
 [node name="Player" parent="." instance=ExtResource("2_lis67")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -1.66393, 0.525204, 0)
+
+[node name="Area3D" type="Area3D" parent="." groups=["interactable"]]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.134747, 0)
+script = SubResource("GDScript_1mnxj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+mesh = SubResource("BoxMesh_54pk0")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_2dt7y")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_p3hvd")
