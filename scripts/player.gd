@@ -68,5 +68,4 @@ func _physics_process(delta: float) -> void:
 	$pivot/Camera3D.position.x = x
 	$pivot/Camera3D.position.y = -(x ** 2.0) * vmod
 
-
 	move_and_slide()
