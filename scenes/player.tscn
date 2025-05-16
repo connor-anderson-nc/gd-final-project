@@ -1,10 +1,38 @@
-[gd_scene load_steps=4 format=3 uid="uid://dncchgg1oekm2"]
+[gd_scene load_steps=12 format=3 uid="uid://dncchgg1oekm2"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_du7vv"]
+[ext_resource type="ArrayMesh" uid="uid://cjw6lr3bsqwwu" path="res://assets/models/general/hand_terminal.res" id="2_351dj"]
+[ext_resource type="Texture2D" uid="uid://dfssnbv46fi0l" path="res://assets/textures/general/handtermtex.jpg" id="3_607et"]
+[ext_resource type="Texture2D" uid="uid://qsj3qhebw1xp" path="res://assets/textures/general/altmap.jpg" id="4_egpck"]
+[ext_resource type="ArrayMesh" uid="uid://bi826v7lnsxpg" path="res://assets/models/general/screen.res" id="5_vmuj8"]
+[ext_resource type="PackedScene" uid="uid://cp5ymsxj68f37" path="res://scenes/UI/terminal_face.tscn" id="6_swd1o"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fok2b"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ylscb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44cwx"]
+albedo_texture = ExtResource("3_607et")
+metallic_specular = 0.87
+normal_enabled = true
+normal_scale = 2.22
+normal_texture = ExtResource("4_egpck")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_f8ie2"]
+viewport_path = NodePath("Hand_Terminal/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0w03m"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_f8ie2")
+metallic_specular = 0.47
+roughness = 0.81
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 5.51
+emission_operator = 1
+emission_on_uv2 = true
+backlight_enabled = true
+backlight = Color(1, 1, 1, 1)
 
 [node name="Player" type="CharacterBody3D"]
 floor_max_angle = 1.39626
@@ -29,3 +57,28 @@ cull_mask = 1048573
 target_position = Vector3(0, 0, -2)
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="Hand_Terminal" type="Node3D" parent="."]
+transform = Transform3D(3.36878e-09, 5.8349e-09, -0.565, -0.489304, 0.2825, 0, 0.2825, 0.489304, 6.73756e-09, 0, 0.0509162, -0.58035)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hand_Terminal"]
+transform = Transform3D(0.8, 0, 0, 0, 0.08, 0, 0, 0, 1, 0, 0, 0)
+mesh = ExtResource("2_351dj")
+surface_material_override/0 = SubResource("StandardMaterial3D_44cwx")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Hand_Terminal"]
+transform = Transform3D(-3.93403e-08, 0, 0.4, 0, 0.385, 0, -0.9, 0, -1.74846e-08, -0.311753, 0.0497625, 0)
+mesh = ExtResource("5_vmuj8")
+surface_material_override/0 = SubResource("StandardMaterial3D_0w03m")
+
+[node name="SubViewport" type="SubViewport" parent="Hand_Terminal"]
+size = Vector2i(1152, 648)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Hand_Terminal/SubViewport"]
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Hand_Terminal/SubViewport/CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TerminalFace" parent="Hand_Terminal/SubViewport/CanvasLayer/AspectRatioContainer" instance=ExtResource("6_swd1o")]
+layout_mode = 2

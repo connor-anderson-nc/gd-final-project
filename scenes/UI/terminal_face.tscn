@@ -44,6 +44,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ohuvt")
+font_size = 30.0
 metadata/_edit_vertical_guides_ = [17.0]
 metadata/_edit_horizontal_guides_ = [607.0, 607.0]
 

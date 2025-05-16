@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ck2ogwdljy7h6"
-path="res://.godot/imported/screen.blend-0b5521426d5825c759d28a5a76d45783.scn"
+uid="uid://dfovdpmxyjdy1"
+path="res://.godot/imported/hand_terminal.blend-f5ccafe0d0a155d5b6674ee65a32dc70.scn"
 
 [deps]
 
-source_file="res://assets/models/general/blend_files/screen.blend"
-dest_files=["res://.godot/imported/screen.blend-0b5521426d5825c759d28a5a76d45783.scn"]
+source_file="res://assets/models/general/blend_files/hand_terminal.blend"
+dest_files=["res://.godot/imported/hand_terminal.blend-f5ccafe0d0a155d5b6674ee65a32dc70.scn"]
 
 [params]
 
@@ -33,14 +33,14 @@ animation/import_rest_as_RESET=false
 import_script/path=""
 _subresources={
 "meshes": {
-"screen_Plane": {
+"hand_terminal_Cube_001": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 60.0,
 "lods/normal_split_angle": 25.0,
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/models/general/screen.res"
+"save_to_file/path": "res://assets/models/general/hand_terminal.res"
 }
 }
 }
