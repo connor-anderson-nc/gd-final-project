@@ -1,6 +1,7 @@
 extends Control
 
 @export var font_size: float
+var temp_text: String
 
 func _ready() -> void:
 	write("Hello World!")
@@ -10,6 +11,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	$input_line/LineEdit.text = temp_text
+	
 	if Input.is_action_just_pressed("tab"):
 		$input_line/LineEdit.grab_focus()
 	if Input.is_action_just_pressed("enter"):

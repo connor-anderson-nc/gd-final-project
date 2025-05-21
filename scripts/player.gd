@@ -3,6 +3,7 @@ extends CharacterBody3D
 ### Movement ###
 const SPEED = 2.5
 const JUMP_VELOCITY = 2
+var can_move = true
 
 ### Camera ###
 @onready var pivot = $pivot
@@ -10,6 +11,12 @@ const sens = .25
 const amp = .1
 const vmod = .3
 var sway_speed = .005
+
+### hand terminal ###
+const out_position = Vector3(0, 0.05, -0.58)
+const away_position = Vector3(-1, 0, 0.6)
+const HTspeed = 0.05
+var HTactive = false
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -27,14 +34,15 @@ func _physics_process(delta: float) -> void:
 	#########################
 	####### Movement ########
 	#########################
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-	elif Input.is_action_just_pressed("jump"):
-		self.velocity.y = JUMP_VELOCITY
-
 	var input_dir := Input.get_vector("left", "right", "forward", "back")
 	var direction = (self.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
+	
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+	elif Input.is_action_just_pressed("jump") && can_move:
+		self.velocity.y = JUMP_VELOCITY
+
+	if direction && can_move:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 	else:
@@ -44,19 +52,44 @@ func _physics_process(delta: float) -> void:
 	###################################
 	####### Non-Movment Actions #######
 	###################################
+	
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 
+	### interact with objects ###
 	var object = $pivot/interaction_ray.get_collider()
-	if object && object.is_in_group("interactable"):
+	if object && object.is_in_group("interactable") && Input.is_action_pressed("interact"):
 		object.interacted()
+
+	###################################
+	########## Hand Terminal ##########
+	###################################
+
+	### toggle ###
+	if Input.is_action_just_pressed("tab"):
+		HTactive = !HTactive
+		can_move = !HTactive
+
+	match HTactive:
+		true: 
+			$Hand_Terminal.position = $Hand_Terminal.position.move_toward(out_position, HTspeed)
+			$Hand_Terminal/LineEdit.grab_focus()
+		false: 
+			$Hand_Terminal.position = $Hand_Terminal.position.move_toward(away_position, HTspeed)
+			$Hand_Terminal/LineEdit.release_focus()
+
+	### send text ###
+	$Hand_Terminal/SubViewport/CanvasLayer/AspectRatioContainer/TerminalFace.temp_text = $Hand_Terminal/LineEdit.text
+	if Input.is_action_just_pressed("enter"):
+		$Hand_Terminal/LineEdit.clear()
 
 	###########################
 	####### Camera Sway #######
 	###########################
+	
 	var x = $pivot/Camera3D.position.x
 
-	if direction:
+	if direction && can_move:
 		x += sway_speed
 		x = clamp(x, -amp, amp)
 	else:
