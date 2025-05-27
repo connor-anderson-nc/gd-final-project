@@ -17,12 +17,27 @@ func _process(delta: float) -> void:
 		$input_line/LineEdit.grab_focus()
 	if Input.is_action_just_pressed("enter"):
 		var text = $input_line/LineEdit.text
-		write(text)
 		
-		#add proccessing the command here later
-
+		## split text to command and arguments
+		print(text)
+		var input = text.split(" ")
+		print(input)
+		var command: Callable = Callable(commands, input[0])
+		
+		if len(text) <= 0:
+			write(">")
+		elif !command.is_valid():
+			write("> " + text)
+			write("! Err: unknown command")
+		else:
+			write("> " + text)
+			command.call()
 
 func write(text):
 	$text_hist.text += text + "\n"
 	if $input_line.position.y < 600:
 		$input_line.position.y += font_size
+
+class commands:
+	func test():
+		pass

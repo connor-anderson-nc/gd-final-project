@@ -8,6 +8,7 @@ var can_move = true
 ### Camera ###
 @onready var pivot = $pivot
 const sens = .25
+# sway #
 const amp = .1
 const vmod = .3
 var sway_speed = .005
