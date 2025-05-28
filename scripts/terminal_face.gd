@@ -19,9 +19,8 @@ func _process(delta: float) -> void:
 		var text = $input_line/LineEdit.text
 		
 		## split text to command and arguments
-		print(text)
 		var input = text.split(" ")
-		print(input)
+		#print(input)
 		var command: Callable = Callable(commands, input[0])
 		
 		if len(text) <= 0:
