@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cp5ymsxj68f37"]
+[gd_scene load_steps=10 format=3 uid="uid://cp5ymsxj68f37"]
 
 [ext_resource type="Script" path="res://scripts/terminal_face.gd" id="1_ohuvt"]
 [ext_resource type="FontFile" uid="uid://dljyqiilwkt41" path="res://assets/fonts/Perfect DOS VGA 437.ttf" id="2_e14yu"]
 [ext_resource type="Shader" path="res://scripts/shaders/vhs_filter.gdshader" id="3_xj3vn"]
+[ext_resource type="Script" path="res://scripts/types/computer.gd" id="4_pyf54"]
 
 [sub_resource type="Theme" id="Theme_hod54"]
 
@@ -112,3 +113,12 @@ layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 color = Color(0, 0.431373, 0.2, 0.286275)
+
+[node name="computer" type="Node" parent="."]
+script = ExtResource("4_pyf54")
+sys_name = "HandTerminal01"
+os_name = "MobileOSv1.2"
+storage_space = 1024
+ram_capacity = 512
+processor_name = "HTMiniProcessor01"
+processor_capacity = 4
