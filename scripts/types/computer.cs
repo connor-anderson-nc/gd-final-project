@@ -22,11 +22,16 @@ public class Computer {
 }
 
 public class FileSys {
+    int max_storage;
+
     int used_space;
     Pointer active_dir;
 
-    private class node {
-        string name;
+    public FileSys() { }
+
+    private class node
+    {
+        string _name;
         dir parent;
     }
 
