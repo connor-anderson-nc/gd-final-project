@@ -3,6 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+public static ref struct pointers
+{
+     public ref FileSys.node active_dir = ref FileSys.root;
+}
+
+
 [GlobalClass]
 public partial class Computer : Node
 {
@@ -30,9 +36,12 @@ public class FileSys
     int max_storage;
     int used_space;
 
-    Pointer active_dir;
+    public node root = new node();
 
-    dir root = new dir();
+    ref struct pointers
+    {
+        public ref node active_dir = ref root;
+    }
 
     public FileSys() { }
 
@@ -40,44 +49,46 @@ public class FileSys
     /// utility funcs ///
     /////////////////////
 
-    private Pointer ReadPath(String _Path)
+    private ref node ReadPath(String _Path)
     {
         String[] PathArr = (PathStart + _Path).Split('/');
-        Pointer current;
+        ref node current = ref root;
         switch (PathArr[0])
         {
             case PathStart:
-                current = &root
+                current = ref root;
                 break;
+            case PathStart + ".":
+                current = Pointers.active_dir;
+                break;
+            case PathStart + "..":
+                current = active_dir.parent;
+                break;
+            default:
+                throw new CustomException("Invalid Path");
         }
        
     }
 
     ////////////////////
-    /// node classes ///
+    /// node class ///
     ////////////////////
 
-    private class node
+    public class node
     {
-        string _name;
-        dir parent;
-    }
+        public enum type {Dir, File}
 
-    private class dir : node
-    {
+        public string _name;
+        public node parent;
+
+        /// dir vars
         Dictionary<String, node> children;
-        public dir()
-        {
-            children = new Dictionary<String, node>();
-        }
 
-    }
-
-    private class file : node
-    {
-        public enum format { BASIC, TXT, PRGM, CONF }
-        int size;
-        object data;
+        // file vars 
+        public enum format { BASIC, TXT, PRGM, CONF, Null }
+        public int size = 0;
+        public object data = null;
+        format form = format.Null;
     }
 }
 
