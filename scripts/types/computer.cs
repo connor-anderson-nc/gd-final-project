@@ -1,12 +1,6 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-
-public static ref struct pointers
-{
-     public ref FileSys.node active_dir = ref FileSys.root;
-}
 
 
 [GlobalClass]
@@ -27,39 +21,48 @@ public partial class Computer : Node
     string processor_name;
     [Export]
     int processor_capacity;
+    [Export]
+    public string start_dir;
 }
 
 public class FileSys
 {
-    const String PathStart = "#";
+    const string PathStart = "#";
 
     int max_storage;
     int used_space;
 
-    public node root = new node();
+    public static node root = new node("root", null, node.Type.Dir);
+    public node active_dir;
 
-    ref struct pointers
+    public FileSys(string start_dir)
     {
-        public ref node active_dir = ref root;
+        node start = ReadPath(start_dir);
+        if (start.type == node.Type.Dir)
+        {
+            active_dir = start;
+        }
+        else
+        {
+            active_dir = root; 
+        }   
     }
-
-    public FileSys() { }
 
     /////////////////////
     /// utility funcs ///
     /////////////////////
 
-    private ref node ReadPath(String _Path)
+    private node ReadPath(String _Path)
     {
-        String[] PathArr = (PathStart + _Path).Split('/');
-        ref node current = ref root;
+        string[] PathArr = (PathStart + _Path).Split('/');
+        node current;
         switch (PathArr[0])
         {
             case PathStart:
-                current = ref root;
+                current = root;
                 break;
             case PathStart + ".":
-                current = Pointers.active_dir;
+                current = active_dir;
                 break;
             case PathStart + "..":
                 current = active_dir.parent;
@@ -67,7 +70,8 @@ public class FileSys
             default:
                 throw new CustomException("Invalid Path");
         }
-       
+
+        return current;
     }
 
     ////////////////////
@@ -76,19 +80,27 @@ public class FileSys
 
     public class node
     {
-        public enum type {Dir, File}
+        public enum Type { Dir, BASIC, TXT, PRGM, CONF, Null }
 
         public string _name;
         public node parent;
+        public Type type;
 
         /// dir vars
-        Dictionary<String, node> children;
+        Dictionary<string, node> children;
 
         // file vars 
-        public enum format { BASIC, TXT, PRGM, CONF, Null }
         public int size = 0;
         public object data = null;
-        format form = format.Null;
+
+        // funcs
+        public node(string n, node p, Type t)
+        {
+            _name = n;
+            parent = p;
+            type = t;
+            children = new Dictionary<string, node>();
+        }
     }
 }
 
