@@ -27,8 +27,6 @@ public partial class Computer : Node
 
 public class FileSys
 {
-    const string PathStart = "#";
-
     int max_storage;
     int used_space;
 
@@ -54,21 +52,50 @@ public class FileSys
 
     private node ReadPath(String _Path)
     {
-        string[] PathArr = (PathStart + _Path).Split('/');
+        CustomException InvalidPath = new CustomException("invalid Path");
+
+        if (string.IsNullOrEmpty(_Path))
+        {
+            throw InvalidPath;
+        }
+
+        string[] PathArr = (_Path).Split('/');
         node current;
         switch (PathArr[0])
         {
-            case PathStart:
+            case "":
                 current = root;
                 break;
-            case PathStart + ".":
+            case ".":
                 current = active_dir;
                 break;
-            case PathStart + "..":
-                current = active_dir.parent;
+            case "..":
+                current = active_dir.parent ?? throw InvalidPath;
                 break;
             default:
-                throw new CustomException("Invalid Path");
+                throw InvalidPath;
+        }
+
+        // not sure about this; strong chance it doesnt work
+        if (PathArr.Length == 2 && PathArr[1] == "")
+        {
+            return current;
+        }
+
+        for (int i = 1; i < PathArr.Length; i++)
+        {
+            if (current.HasChild(PathArr[i]))
+            {
+                current = current.GetChild(PathArr[i]);
+            }
+            else if (PathArr[i] == "..")
+            {
+                current = current.parent ?? throw InvalidPath;
+            }
+            else
+            {
+                throw InvalidPath;
+            }
         }
 
         return current;
@@ -101,6 +128,19 @@ public class FileSys
             type = t;
             children = new Dictionary<string, node>();
         }
+
+        public void delete()
+        {
+            this.parent.children.Remove(this._name);
+        }
+
+        public void AddChild(string n, Type t)
+        {
+            
+        }
+
+        public bool HasChild(string child) { return this.children.ContainsKey(child); }
+        public node GetChild(string child_name) { return this.children[child_name]; }
     }
 }
 
