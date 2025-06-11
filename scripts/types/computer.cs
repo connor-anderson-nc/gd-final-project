@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 [GlobalClass]
 public partial class Computer : Node
@@ -23,6 +23,7 @@ public partial class Computer : Node
     int processor_capacity;
     [Export]
     public string start_dir;
+
 }
 
 public class FileSys
@@ -30,11 +31,16 @@ public class FileSys
     int max_storage;
     int used_space;
 
-    public static node root = new node("root", null, node.Type.Dir);
+    // special nodes (and active dir)
+    public node root;
+    public node mount;
     public node active_dir;
 
     public FileSys(string start_dir)
     {
+        root = new node("Root", null, node.Type.Dir);
+        mount = new node("Mount", root, node.Type.Dir);
+
         node start = ReadPath(start_dir);
         if (start.type == node.Type.Dir)
         {
@@ -42,8 +48,61 @@ public class FileSys
         }
         else
         {
-            active_dir = root; 
-        }   
+            active_dir = root;
+        }
+
+        root.children.Add(mount._name, mount);
+    }
+
+    /////////////////////
+    /// command funcs ///
+    /////////////////////
+
+    public string Change_dir(string path)
+    {
+        try
+        {
+            node temp = ReadPath(path);
+
+            if (temp.type != node.Type.Dir) { return path + " is not a directory"; }
+
+            active_dir = ReadPath(path);
+            return "current path: " + path;
+        }
+        catch (CustomException ex)
+        {
+            return ex.Message;
+        }
+    }
+
+    public string Make_dir(string path)
+    {
+        
+    }
+
+    public string[] List(string path = null)
+    {
+        if (path != null)
+        {
+            node temp = ReadPath(path);
+            return temp.children.Keys.ToArray();
+        }
+        else
+        {
+            return active_dir.children.Keys.ToArray();
+        }
+    }
+
+
+    // mount funcs
+    public void Mount(FileSys m)
+    {
+        mount.children = m.root.children;
+    }
+
+    public void UnMount()
+    {
+        mount.children = new Dictionary<string, node>();
     }
 
     /////////////////////
@@ -101,6 +160,13 @@ public class FileSys
         return current;
     }
 
+    private (string, string) StripLast(string path)
+    {
+        string[] PathArr = path.Split('/');
+        int final = PathArr.Length - 1;
+        if (PathArr.Length <= 1) { return path; }
+    }
+
     ////////////////////
     /// node class ///
     ////////////////////
@@ -114,7 +180,7 @@ public class FileSys
         public Type type;
 
         /// dir vars
-        Dictionary<string, node> children;
+        public Dictionary<string, node> children;
 
         // file vars 
         public int size = 0;
@@ -136,7 +202,7 @@ public class FileSys
 
         public void AddChild(string n, Type t)
         {
-            
+            this.children.Add(n, new node(n, this, t));
         }
 
         public bool HasChild(string child) { return this.children.ContainsKey(child); }
