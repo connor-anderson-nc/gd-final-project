@@ -24,12 +24,24 @@ public partial class Computer : Node
     [Export]
     public string start_dir;
 
+
+    public FileSys files;
+
+    public override void _Ready()
+    {
+        files = new FileSys(start_dir);
+    }
+
+    public void test()
+    {
+        Console.WriteLine("this is a test function");
+    }
 }
 
 public class FileSys
 {
     int max_storage;
-    int used_space;
+    int used_space = 0;
 
     // special nodes (and active dir)
     public node root;
@@ -62,11 +74,17 @@ public class FileSys
     {
         try
         {
-            node temp = ReadPath(path);
+            node temp;
+
+            try
+            {
+              temp = ReadPath(path);  
+            }
+            catch (CustomException ex) { return ex.Message; }
 
             if (temp.type != node.Type.Dir) { return path + " is not a directory"; }
 
-            active_dir = ReadPath(path);
+            active_dir = temp;
             return "current path: " + path;
         }
         catch (CustomException ex)
@@ -77,14 +95,49 @@ public class FileSys
 
     public string Make_dir(string path)
     {
-        
+        var (p, n) = StripLast(path);
+        node temp_dir;
+
+        try
+        {
+            temp_dir = ReadPath(p);
+        }
+        catch (CustomException ex) { return ex.Message; }
+
+        if (temp_dir.type != node.Type.Dir)
+        {
+            return "invalid path";
+        }
+
+        temp_dir.AddChild(n, node.Type.Dir);
+        return "created directory in " + path;
+    }
+
+    public string Remove(string path)
+    {
+        node target;
+        try
+        {
+            target = ReadPath(path);
+        }
+        catch (CustomException ex) { return ex.Message; }
+
+        target.delete();
+        return "deleted: " + path;
     }
 
     public string[] List(string path = null)
     {
         if (path != null)
         {
-            node temp = ReadPath(path);
+            node temp;
+
+            try
+            {
+                temp = ReadPath(path);
+            }
+            catch (CustomException ex) { return new string[] { ex.Message }; }
+
             return temp.children.Keys.ToArray();
         }
         else
@@ -160,11 +213,13 @@ public class FileSys
         return current;
     }
 
-    private (string, string) StripLast(string path)
+    private (string p, string n) StripLast(string path)
     {
         string[] PathArr = path.Split('/');
         int final = PathArr.Length - 1;
-        if (PathArr.Length <= 1) { return path; }
+        if (PathArr.Length <= 1) { return (path, null); }
+
+        return (string.Join("/", PathArr.Take(final)), PathArr[final]);
     }
 
     ////////////////////
@@ -197,7 +252,21 @@ public class FileSys
 
         public void delete()
         {
-            this.parent.children.Remove(this._name);
+            // Recursively delete all children
+            foreach (var child in children.Values.ToList())
+            {
+                child.delete();
+            }
+
+            // Remove self from parent's children
+            if (parent != null)
+            {
+                parent.children.Remove(this._name);
+            }
+
+            // Clear references
+            parent = null;
+            children.Clear();
         }
 
         public void AddChild(string n, Type t)
