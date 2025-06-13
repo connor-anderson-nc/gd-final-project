@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 [GlobalClass]
-public partial class Computer : Node
+public partial class computer : Node
 {
     [ExportGroup("sys info")]
     [Export]
@@ -109,7 +109,7 @@ public class FileSys
             return "invalid path";
         }
 
-        temp_dir.AddChild(n, node.Type.Dir);
+        temp_dir.fsAddChild(n, node.Type.Dir);
         return "created directory in " + path;
     }
 
@@ -122,7 +122,7 @@ public class FileSys
         }
         catch (CustomException ex) { return ex.Message; }
 
-        target.delete();
+        target.fsdelete();
         return "deleted: " + path;
     }
 
@@ -196,9 +196,9 @@ public class FileSys
 
         for (int i = 1; i < PathArr.Length; i++)
         {
-            if (current.HasChild(PathArr[i]))
+            if (current.fsHasChild(PathArr[i]))
             {
-                current = current.GetChild(PathArr[i]);
+                current = current.fsGetChild(PathArr[i]);
             }
             else if (PathArr[i] == "..")
             {
@@ -250,12 +250,12 @@ public class FileSys
             children = new Dictionary<string, node>();
         }
 
-        public void delete()
+        public void fsdelete()
         {
             // Recursively delete all children
             foreach (var child in children.Values.ToList())
             {
-                child.delete();
+                child.fsdelete();
             }
 
             // Remove self from parent's children
@@ -269,13 +269,13 @@ public class FileSys
             children.Clear();
         }
 
-        public void AddChild(string n, Type t)
+        public void fsAddChild(string n, Type t)
         {
             this.children.Add(n, new node(n, this, t));
         }
 
-        public bool HasChild(string child) { return this.children.ContainsKey(child); }
-        public node GetChild(string child_name) { return this.children[child_name]; }
+        public bool fsHasChild(string child) { return this.children.ContainsKey(child); }
+        public node fsGetChild(string child_name) { return this.children[child_name]; }
     }
 }
 

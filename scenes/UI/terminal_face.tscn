@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cp5ymsxj68f37"]
+[gd_scene load_steps=11 format=3 uid="uid://cp5ymsxj68f37"]
 
 [ext_resource type="Script" path="res://scripts/terminal_face.gd" id="1_ohuvt"]
 [ext_resource type="FontFile" uid="uid://dljyqiilwkt41" path="res://assets/fonts/Perfect DOS VGA 437.ttf" id="2_e14yu"]
 [ext_resource type="Shader" path="res://scripts/shaders/vhs_filter.gdshader" id="3_xj3vn"]
+[ext_resource type="Script" path="res://scripts/types/computer.cs" id="4_1vhor"]
+[ext_resource type="Script" path="res://scripts/commands.gd" id="5_pq7r7"]
 
 [sub_resource type="Theme" id="Theme_hod54"]
 
@@ -35,10 +37,6 @@ shader_parameter/warp_amount = 0.0
 shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.93
 shader_parameter/vignette_opacity = 0.5
-
-[sub_resource type="GDScript" id="GDScript_jo1uy"]
-script/source = "extends Computer
-"
 
 [node name="TerminalFace" type="Control"]
 layout_mode = 3
@@ -117,5 +115,16 @@ offset_right = 1152.0
 offset_bottom = 648.0
 color = Color(0, 0.431373, 0.2, 0.286275)
 
-[node name="Node" type="Node" parent="."]
-script = SubResource("GDScript_jo1uy")
+[node name="computer" type="Node" parent="."]
+script = ExtResource("4_1vhor")
+sys_name = "silly"
+os_name = "sillyOS"
+storage_space = 999999999
+ram_name = "generic ram name"
+ram_capacity = 999999999999
+processor_name = "wheeeeee"
+processor_capacity = 9999999999
+start_dir = "/"
+
+[node name="commands" type="Node" parent="."]
+script = ExtResource("5_pq7r7")

@@ -21,7 +21,7 @@ func _process(delta: float) -> void:
 		## split text to command and arguments
 		var input = text.split(" ")
 		#print(input)
-		var command: Callable = Callable(commands, input[0])
+		var command: Callable = Callable($commands, input[0])
 		
 		if len(text) <= 0:
 			write(">")
@@ -36,7 +36,3 @@ func write(text):
 	$text_hist.text += text + "\n"
 	if $input_line.position.y < 600:
 		$input_line.position.y += font_size
-
-class commands:
-	func test():
-		pass
